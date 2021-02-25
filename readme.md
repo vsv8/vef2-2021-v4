@@ -2,6 +2,8 @@
 
 [Verkefnið byggir á verkefni 9 í vefforritun 1, 2020](https://github.com/vefforritun/vef1-2020-v9-synilausn).
 
+[Kynning á verkefni](https://youtu.be/U8K0m9zRxHk).
+
 Bæta skal við server sem situr á milli beiðna frá client til USGS (proxyar beiðnir), þessi proxy notar redis til að cache gögn á milli fyrirspurna.
 
 Einnig skal bæta við möguleikum á að sækja öll gögn eftir tímabili og stærðargráðu, í `index.html` er búið að setja upp lista af tenglum á hverja týpu. Útfæra þarf virkni í framenda sem sækir rétt gögn gegnum proxy þjónustu. Beiðnir á proxy þjónustu ættu að taka við querystring breytum, t.d. `/proxy?period=hour&type=significant` og skila gögnum ásamt auka lýsigögnum um fyrirspurn.
