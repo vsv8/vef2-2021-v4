@@ -1,15 +1,15 @@
 // TODO útfæra proxy virkni
-import { getCachedEarthquakes, setCachedEarthquakes } from './cache.js';
-import { timerStart, timerEnd } from './time.js';
-
 import express from 'express';
 import fetch from 'node-fetch';
+
+import { getCachedEarthquakes, setCachedEarthquakes } from './cache.js';
+import { timerStart, timerEnd } from './time.js';
 
 export const router = express.Router();
 
 async function proxy(req, res) {
   const stopwatch = timerStart();
-  let { type, period } = req.query;
+  const { type, period } = req.query;
   const cacheKey = `${type}_${period}`;
   let data;
   let result;
@@ -26,45 +26,43 @@ async function proxy(req, res) {
       return null;
     }
     data = {
-      'data': result,
-      'info': {
-        'cached': true,
-        'elapsed': timerEnd(stopwatch),
+      data: result,
+      info: {
+        cached: true,
+        elapsed: timerEnd(stopwatch),
       },
     };
-    res.json(data);
-    return;
+    return res.json(data);
   }
 
   try {
     result = await fetch(URL);
   } catch (err) {
-    console.error('FETCH VES', err);
+    console.error('Fetch error', err);
   }
 
   if (!result.ok) {
-    console.error('RESULT DRASL', await result.text());
-    return;
+    return console.error('Result error', await result.text());
   }
 
-  let resultText = await result.text();
+  const resultText = await result.text();
   await setCachedEarthquakes(cacheKey, resultText);
 
   try {
-    result = JSON.parse (resultText);
+    result = JSON.parse(resultText);
   } catch (err) {
     console.warn(`unable to parse cached data, ${cacheKey}, ${err.message}`);
     return null;
   }
 
   data = {
-    'data': resultText,
-    'info': {
-      'cached': false,
-      'elapsed': timerEnd(stopwatch),
+    data: resultText,
+    info: {
+      cached: false,
+      elapsed: timerEnd(stopwatch),
     },
   };
-  res.json(data);
+  return res.json(data);
 }
 
 router.get('/proxy', proxy);

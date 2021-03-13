@@ -11,7 +11,8 @@ const asyncGet = util.promisify(client.get).bind(client);
 const asyncSet = util.promisify(client.set).bind(client);
 
 export async function getCachedEarthquakes(key) {
-  return await asyncGet(key);
+  const result = await asyncGet(key);
+  return result;
 }
 
 export async function setCachedEarthquakes(key, earthquakes) {

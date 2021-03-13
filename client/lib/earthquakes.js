@@ -17,4 +17,3 @@ export async function fetchEarthquakes(period, type) {
 
   return data;
 }
-

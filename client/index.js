@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  let type = urlParams.has('type') ? urlParams.get('type') : 'all';
-  let period = urlParams.has('period') ? urlParams.get('period') : 'hour';
+  const type = urlParams.has('type') ? urlParams.get('type') : 'all';
+  const period = urlParams.has('period') ? urlParams.get('period') : 'hour';
 
   const earthquakes = await fetchEarthquakes(period, type);
 
@@ -26,11 +26,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       el('p', 'Villa við að sækja gögn'),
     );
   }
+
   let headerText;
   const waitTime = earthquakes.info.elapsed;
   const isCached = earthquakes.info.cached ? '' : 'ekki ';
 
-  switch(period) {
+  switch (period) {
     case 'month':
       headerText = 'seinasta mánuð';
       break;
@@ -43,6 +44,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     case 'hour':
       headerText = 'seinustu klukkustund';
       break;
+    default:
+      headerText = '';
   }
 
   const header = document.querySelector('h1');

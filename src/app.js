@@ -21,12 +21,8 @@ app.use(express.static(join(path, '../node_modules/leaflet/dist')));
 // TODO setja upp proxy þjónustu
 
 app.use((req, res, next) => {
-  res.header(
-    'Access-Control-Allow-Origin', '*'
-  );
-  res.header(
-    'Access-Control-Allow-Methods', 'GET'
-  );
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET');
   next();
 });
 
@@ -73,7 +69,6 @@ function errorHandler(err, req, res, next) {
 
 app.use(notFoundHandler);
 app.use(errorHandler);
-
 
 // Verðum að setja bara *port* svo virki á heroku
 app.listen(port, () => {
