@@ -2,7 +2,7 @@ export async function fetchEarthquakes(period, type) {
   // TODO sækja gögn frá proxy þjónustu
   let result;
   try {
-    result = await fetch(`http://localhost:3001/proxy?period=${period}&type=${type}`);
+    result = await fetch(`/proxy?period=${period}&type=${type}`);
   } catch (e) {
     console.error('Villa við að sækja', e);
     return null;
