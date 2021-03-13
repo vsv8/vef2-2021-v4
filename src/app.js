@@ -1,8 +1,8 @@
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-
 import express from 'express';
 import dotenv from 'dotenv';
+
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { router as proxyRouter } from './proxy.js';
 
@@ -16,9 +16,32 @@ const app = express();
 const path = dirname(fileURLToPath(import.meta.url));
 
 app.use(express.static(join(path, '../public')));
+app.use(express.static(join(path, '../node_modules/leaflet/dist')));
 
 // TODO setja upp proxy þjónustu
+
+app.use((req, res, next) => {
+  res.header(
+    'Access-Control-Allow-Origin', '*'
+  );
+  res.header(
+    'Access-Control-Allow-Methods', 'GET'
+  );
+  next();
+});
+
 // TODO birta index.html skjal
+
+app.set('view engine', 'ejs');
+app.set('views', join(path, '../views'));
+
+app.get('/', (req, res) => {
+  res.sendFile('index.html', {
+    root: join(path, '..'),
+  });
+});
+
+app.use(proxyRouter);
 
 /**
  * Middleware sem sér um 404 villur.
@@ -50,6 +73,7 @@ function errorHandler(err, req, res, next) {
 
 app.use(notFoundHandler);
 app.use(errorHandler);
+
 
 // Verðum að setja bara *port* svo virki á heroku
 app.listen(port, () => {
