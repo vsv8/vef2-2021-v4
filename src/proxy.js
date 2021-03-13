@@ -42,11 +42,13 @@ async function proxy(req, res) {
     console.error('Fetch error', err);
   }
 
+  result = await result.json();
+
   data = {
-    'data': result,
-    'info': {
-      'cached': false,
-      'elapsed': timerEnd(stopwatch),
+    data: result,
+    info: {
+      cached: false,
+      elapsed: timerEnd(stopwatch),
     },
   };
 
